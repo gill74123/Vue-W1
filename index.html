@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Boostrap.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <!-- all.css-->
+    <link rel="stylesheet" href="./CSS/all.css">
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+          <div class="row py-3">
+            <div class="col-md-6">
+              <h2>產品列表</h2>
+              <table class="table table-hover mt-4">
+                <thead>
+                  <tr>
+                    <th width="150">產品名稱</th>
+                    <th width="120">
+                      原價
+                    </th>
+                    <th width="120">
+                      售價
+                    </th>
+                    <th width="150">
+                      是否啟用
+                    </th>
+                    <th width="120">
+                      查看細節
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- 用 v-for 迴圈渲染產品列表 -->
+                  <tr v-for="item in newProducts" :key="item.id">
+                    <td width="150">{{ item.title }}</td>
+                    <td width="120">{{ item.origin_price }}</td>
+                    <td width="120">{{ item.price }}</td>
+                    <td width="150">
+                      <!-- 用 v-if/else 去判斷是否啟用 -->
+                      <span class="text-success" v-if="item.is_enabled">啟用</span>
+                      <span v-else>未啟用</span>
+                    </td>
+                    <td width="120">
+                      <!-- 點擊 button 會將該筆資料賦予到準備好的 productDetail 物件內 -->
+                      <button type="button" class="btn btn-primary" @click="productDetail = item">查看細節</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>目前有 <span>{{ newProducts.length }}</span> 項產品</p>
+            </div>
+            <div class="col-md-6">
+              <h2>單一產品細節</h2>
+              <!-- 用 v-if/else 判斷是否顯示資訊 or "請選擇一個商品查看" -->
+              <template v-if="productDetail.id">
+                <!-- 以下就將剛剛點擊 button 存到 productDetail 的資料渲染在畫面上-->
+                <!-- 不用 v-for 迴圈是因為 1. productDetail 為物件他會出現12個畫面(key有12個)-->
+                <div class="card mb-3">
+                  <img :src="productDetail.imageUrl" class="card-img-top primary-image" alt="主圖">
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      {{ productDetail.title }}
+                      <span class="badge bg-primary ms-2">{{ productDetail.category }}</span>
+                    </h5>
+                    <p class="card-text">商品描述：{{ productDetail.description }}</p>
+                    <p class="card-text">商品內容：{{ productDetail.content }}</p>
+                    <div class="d-flex">
+                      <p class="card-text me-2">{{ productDetail.price }}</p>
+                      <p class="card-text text-secondary"><del>{{ productDetail.origin_price }}</del></p>
+                      {{ productDetail.unit }} / 元
+                    </div>
+                  </div>
+                </div>
+                <template v-for="(item, index) in productDetail.imagesUrl" :key="index">
+                  <img :src="item" :alt="`圖${index + 1}`" class="images m-2">
+                </template>
+              </template>
+              <p class="text-secondary" v-else>請選擇一個商品查看</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- all.js -->
+      <script src="./JS/all.js" type="module"></script>
+</body>
+</html>
