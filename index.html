@@ -77,9 +77,14 @@
                     </div>
                   </div>
                 </div>
-                <template v-for="(item, index) in productDetail.imagesUrl" :key="index">
+                <!-- 查看了 DC 上的討論作的修改，外層加上 div 方便做管理 -->
+                <div>
+                  <img v-for="(item, index) in productDetail.imagesUrl" :key="index" :src="item" :alt="`圖${index + 1}`" class="images m-2">
+                </div>
+                <!-- template 在瀏覽器上不會編譯，這邊比較像是給提醒使用 v-for 所以才使用的 -->
+                <!-- <template v-for="(item, index) in productDetail.imagesUrl" :key="index">
                   <img :src="item" :alt="`圖${index + 1}`" class="images m-2">
-                </template>
+                </template> -->
               </template>
               <p class="text-secondary" v-else>請選擇一個商品查看</p>
             </div>
